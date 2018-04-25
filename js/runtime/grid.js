@@ -25,14 +25,15 @@ const GRID_CELL_RADIUS = GRID_CONTAINER_WIDTH * 1 / 75
  * 提供render函数实现重绘网格功能
  */
 export default class Grid extends Sprite {
-  constructor(ctx) {
+  constructor(ctx, row, column) {
     super(GRID_CONTAINER_IMG_SRC, GRID_CONTAINER_STYLE, GRID_CONTAINER_WIDTH, GRID_CONTAINER_WIDTH, START_X, START_Y);
 
+    this.row = row;// 行
+    this.column = column;// 列
     this.render(ctx);
   }
 
-  update(ctx) {
-    this.render(ctx);
+  update() {
   }
 
   /**
@@ -44,8 +45,8 @@ export default class Grid extends Sprite {
   }
 
   drawGrid(ctx) {
-    for (var i = 0; i < 4; i++) {
-      for (var j = 0; j < 4; j++) {
+    for (var i = 0; i < this.row; i++) {
+      for (var j = 0; j < this.column; j++) {
         this.fillRoundRect(ctx, START_X + GRID_CELL_SPACE * (j + 1) + GRID_CELL_WIDTH * j, START_Y + GRID_CELL_SPACE * (i + 1) + GRID_CELL_WIDTH * i, GRID_CELL_WIDTH, GRID_CELL_WIDTH, GRID_CELL_RADIUS, GRID_CELL_STYLE);
       }
     }

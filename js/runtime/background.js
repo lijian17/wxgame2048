@@ -18,7 +18,6 @@ export default class BackGround extends Sprite {
   }
 
   update(ctx) {
-    
   }
 
   /**

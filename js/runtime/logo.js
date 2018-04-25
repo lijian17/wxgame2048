@@ -17,7 +17,7 @@ export default class Logo extends Sprite {
     this.render(ctx);
   }
 
-  update(ctx) {
+  update() {
 
   }
 

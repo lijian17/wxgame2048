@@ -32,12 +32,11 @@ export default class Score extends Sprite {
     this.render(ctx);
   }
 
-  update(ctx, _score) {
+  update(_score) {
     this.score = _score;
     if (this.score > this.best) {
       this.best = this.score;
     }
-    this.render(ctx);
   }
 
   updateScore(ctx) {

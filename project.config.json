@@ -7,7 +7,7 @@
 		"minified": true,
 		"newFeature": true
 	},
-	"compileType": "game",
+	"compileType": "miniprogram",
 	"libVersion": "game",
 	"appid": "touristappid",
 	"projectname": "game2048",
