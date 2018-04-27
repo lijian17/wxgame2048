@@ -22,7 +22,7 @@ export default class Sprite {
    * @param ctx canvas对象
    */
   drawToCanvas(ctx) {
-    if (!this.viseble) {
+    if (!this.visible) {
       return;
     }
 
