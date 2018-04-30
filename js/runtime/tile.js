@@ -41,12 +41,18 @@ function random(start, end) {
  * 游戏网格类
  * 提供render函数实现重绘网格功能
  */
-export default class Grid extends Animation {
-  constructor(ctx, row, column) {
+export default class Tile extends Animation {
+  constructor(ctx, row, column, position, value) {
     super(GRID_CONTAINER_IMG_SRC, GRID_CONTAINER_STYLE, GRID_CONTAINER_WIDTH, GRID_CONTAINER_WIDTH, START_X, START_Y);
 
     this.row = row;// 行
     this.column = column;// 列
+
+    this.x = position.x;
+    this.y = position.y;
+    this.value = value || 2;
+    this.previousPosition = null;// 滑块上一坐标点
+    this.mergedFrom = null;
 
     this.initGridAnimation();
   }
@@ -130,8 +136,40 @@ export default class Grid extends Animation {
     this.y += this[__.speed];
 
     // 对象回收
-    if (this.y > window.innerHeight + this.height){
+    if (this.y > window.innerHeight + this.height) {
       databus.removeEnemey(this)
+    }
+  }
+
+  /**
+   * 保存坐标点
+   */
+  savePosition() {
+    this.previousPosition = {
+      x: this.x,
+      y: this.y
+    }
+  }
+
+  /**
+   * 更新坐标点
+   * @param {Object} position
+   */
+  updatePosition(position) {
+    this.x = position.x;
+    this.y = position.y
+  }
+
+  /**
+   * 滑块序列化(坐标数据，数值数据)
+   */
+  serialize() {
+    return {
+      position: {
+        x: this.x,
+        y: this.y
+      },
+      value: this.value
     }
   }
 }

@@ -4,6 +4,8 @@ import Logo from './runtime/logo.js'
 import Score from './runtime/score.js'
 import Grid from './runtime/grid.js'
 import Music from './runtime/music.js'
+import Tile from './runtime/tile.js'
+import StorageManager from './runtime/localstoragemanager.js'
 
 
 let ctx = canvas.getContext('2d')
@@ -41,9 +43,20 @@ export default class Main {
     this.score = new Score(ctx);
     this.grid = new Grid(ctx, ROW, COLUMN);
     // this.music = new Music();
+    this.storageManager = new StorageManager();
 
     this.bindLoop = this.loop.bind(this);
     this.hasEventBind = false;
+
+    if (!this.hasEventBind) {
+      this.hasEventBind = true;
+      this.touchstartHandler = this.touchstartEventHandler.bind(this);
+      this.touchmoveHandler = this.touchmoveEventHandler.bind(this);
+      this.touchendHandler = this.touchendEventHandler.bind(this);
+      canvas.addEventListener('touchstart', this.touchstartHandler);
+      canvas.addEventListener('touchmove', this.touchmoveHandler);
+      canvas.addEventListener('touchend', this.touchendHandler);
+    }
 
     // 清除上一层的动画
     window.cancelAnimationFrame(this.aniId);
@@ -55,7 +68,7 @@ export default class Main {
    * 滑块生成逻辑
    */
   tileGenerate() {
-
+    new Tile(ctx, 0, 0);
   }
 
   /**
