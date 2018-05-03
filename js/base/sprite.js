@@ -11,8 +11,8 @@ export default class Sprite {
     this.width = width;
     this.height = height;
 
-    this.x = x;
-    this.y = y;
+    this.spX = x;
+    this.spY = y;
 
     this.visible = true;
   }
@@ -26,7 +26,7 @@ export default class Sprite {
       return;
     }
 
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    ctx.drawImage(this.img, this.spX, this.spY, this.width, this.height);
   }
 
   pathRoundRect(ctx, width, height, radius) {
@@ -66,14 +66,14 @@ export default class Sprite {
    * @param{Sprite} sp: Sptite的实例
    */
   isCollideWith(sp) {
-    let spX = sp.x + sp.width / 2;
-    let spY = sp.y + sp.height / 2;
+    let spX = sp.spX + sp.width / 2;
+    let spY = sp.spY + sp.height / 2;
 
     if (!sp.visible || !this.visible) {
       return false;
     }
 
-    if ((spX >= this.x) || (spX <= (this.x + this.width)) || (spY >= this.y) || (spY <= (this.y + this.height))) {
+    if ((spX >= this.spX) || (spX <= (this.spX + this.width)) || (spY >= this.spY) || (spY <= (this.spY + this.height))) {
       return false;
     }
 

@@ -44,6 +44,7 @@ export default class Animation extends Sprite {
    * 为了简单，只支持一个帧动画
    */
   initFrames(tileList) {
+    this.tileList = [];
     tileList.forEach((tileMetadata) => {
       this.tileList.push(tileMetadata);
     });
@@ -60,7 +61,7 @@ export default class Animation extends Sprite {
     ctx.fillStyle = '#fff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = '24px bold Arial';
+    ctx.font = 'bold 24px Arial';
     ctx.fillText(t.text, t.x + t.width / 2, t.y + t.height / 2);
     ctx.closePath();
   }
@@ -75,7 +76,7 @@ export default class Animation extends Sprite {
     this.visible = false;
 
     this.isPlaying = true;
-    this.pool = pool;
+    this.loop = loop;
 
     this.index = index;
 

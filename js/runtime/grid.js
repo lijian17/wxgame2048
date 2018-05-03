@@ -44,14 +44,31 @@ export default class Grid extends Sprite {
    * 重绘游戏网格
    */
   render(ctx) {
-    this.fillRoundRect(ctx, START_X, START_Y, GRID_CONTAINER_WIDTH, GRID_CONTAINER_WIDTH, GRID_CONTAINER_RADIUS, GRID_CONTAINER_STYLE);
+    this.fillRoundRect(ctx,
+      START_X,
+      START_Y,
+      GRID_CONTAINER_WIDTH,
+      GRID_CONTAINER_WIDTH,
+      GRID_CONTAINER_RADIUS,
+      GRID_CONTAINER_STYLE);
     this.drawGrid(ctx);
+    this.drawCell(ctx);
+  }
+
+  drawCell(ctx) {
+    
   }
 
   drawGrid(ctx) {
     for (var i = 0; i < this.row; i++) {
       for (var j = 0; j < this.column; j++) {
-        this.fillRoundRect(ctx, START_X + GRID_CELL_SPACE * (j + 1) + GRID_CELL_WIDTH * j, START_Y + GRID_CELL_SPACE * (i + 1) + GRID_CELL_WIDTH * i, GRID_CELL_WIDTH, GRID_CELL_WIDTH, GRID_CELL_RADIUS, GRID_CELL_STYLE);
+        this.fillRoundRect(ctx,
+          START_X + GRID_CELL_SPACE * (j + 1) + GRID_CELL_WIDTH * j,
+          START_Y + GRID_CELL_SPACE * (i + 1) + GRID_CELL_WIDTH * i,
+          GRID_CELL_WIDTH,
+          GRID_CELL_WIDTH,
+          GRID_CELL_RADIUS,
+          GRID_CELL_STYLE);
       }
     }
   }
@@ -145,7 +162,7 @@ export default class Grid extends Sprite {
    */
   cellContent(cell) {
     if (this.withinBounds(cell)) {
-      return this.cells[cell.x][cell.y];
+      return this.cells[cell.x][cell.x];
     } else {
       return null;
     }
@@ -156,7 +173,7 @@ export default class Grid extends Sprite {
    * @param {Object} tile
    */
   insertTile(tile) {
-    this.cells[tile.x][tile.y] = tile;
+    this.cells[tile.x][tile.x] = tile;
   }
 
   /**
@@ -164,7 +181,7 @@ export default class Grid extends Sprite {
    * @param {Object} tile
    */
   removeTile(tile) {
-    this.cells[tile.x][tile.y] = null;
+    this.cells[tile.x][tile.x] = null;
   }
 
   /**

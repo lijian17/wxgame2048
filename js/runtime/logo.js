@@ -34,7 +34,8 @@ export default class Logo extends Sprite {
     ctx.textAlign = "left";
     ctx.textBaseline = "middle"//得写在font之前
     ctx.font = "10px Arial bold";
-    ctx.fillText("大学毕业小屌丝通过努力到达人生巅峰的励(苦)志(逼)过程。", 10, 100);
+    ctx.fillText("大学毕业小屌丝通过努力到达", 10, 80);      
+    ctx.fillText("人生巅峰的励(苦)志(逼)过程。", 10, 100);
     ctx.closePath();
   }
 }
