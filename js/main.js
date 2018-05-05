@@ -76,7 +76,7 @@ export default class Main {
     this.logo.render(ctx);
     this.score.render(ctx);
     this.grid.render(ctx);
-    databus.tiles.forEach((item) => { item.render(ctx) });
+    // databus.tiles.forEach((item) => { item.render(ctx) });
 
     databus.animations.forEach((ani) => {
       if (ani.isPlaying) {

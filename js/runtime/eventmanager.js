@@ -92,10 +92,10 @@ export default class EventManager {
     }
     if (-addX > W / 50 && percent) {
       console.log(addX, addY, "向左");
-      this.emit('move', 1);
+      this.emit('move', 3);
     } else if (addX > W / 50 && percent) {
       console.log(addX, addY, "向右");
-      this.emit('move', 3);
+      this.emit('move', 1);
     } else if (-addY > W / 50 && !percent) {
       console.log(addX, addY, "向上");
       this.emit('move', 0);

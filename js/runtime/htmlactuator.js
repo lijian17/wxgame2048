@@ -20,7 +20,7 @@ export default class HTMLActuator {
   actuate(grid, metadata) {
     var self = this;
     window.requestAnimationFrame(function () {
-      self.clearContainer(self.tileContainer);// 先清理展示控件数据
+      // self.clearContainer(self.tileContainer);// 先清理展示控件数据
       grid.cells.forEach(function (column) {
         column.forEach(function (cell) {
           if (cell) {

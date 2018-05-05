@@ -32,9 +32,9 @@ export default class Grid extends Sprite {
     this.row = row;// 行
     this.column = column;// 列
 
-    this.render(ctx);
-
     this.cells = previousState ? this.fromState(previousState) : this.empty();
+    
+    this.render(ctx);
   }
 
   update() {
@@ -56,7 +56,14 @@ export default class Grid extends Sprite {
   }
 
   drawCell(ctx) {
-    
+    for (let i = 0; i < this.row; i++) {
+      for (let j = 0; j < this.column; j++) {
+        let cell = this.cells[i][j];
+        if (cell) {
+          cell.render(ctx);
+        }
+      }
+    }
   }
 
   drawGrid(ctx) {
@@ -129,7 +136,7 @@ export default class Grid extends Sprite {
    */
   eachCell(callback) {
     for (let x = 0; x < this.row; x++) {
-      for (var y = 0; y < this.column; y++) {
+      for (let y = 0; y < this.column; y++) {
         callback(x, y, this.cells[x][y]);
       }
     }
@@ -162,7 +169,7 @@ export default class Grid extends Sprite {
    */
   cellContent(cell) {
     if (this.withinBounds(cell)) {
-      return this.cells[cell.x][cell.x];
+      return this.cells[cell.x][cell.y];
     } else {
       return null;
     }
@@ -173,7 +180,7 @@ export default class Grid extends Sprite {
    * @param {Object} tile
    */
   insertTile(tile) {
-    this.cells[tile.x][tile.x] = tile;
+    this.cells[tile.x][tile.y] = tile;
   }
 
   /**
@@ -181,7 +188,7 @@ export default class Grid extends Sprite {
    * @param {Object} tile
    */
   removeTile(tile) {
-    this.cells[tile.x][tile.x] = null;
+    this.cells[tile.x][tile.y] = null;
   }
 
   /**
