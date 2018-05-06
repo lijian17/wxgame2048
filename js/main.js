@@ -210,6 +210,11 @@ export default class Main {
     this.grid.cells[tile.x][tile.y] = null;
     this.grid.cells[cell.x][cell.y] = tile;
     tile.updatePosition(cell);
+
+    // let move = databus.pool.getItemByClass('tile', Tile);
+    // move.init(cell, tile.value, 3);
+    // move.playAnimation();
+    // databus.tiles.push(move);
   }
 
   /**
@@ -249,7 +254,7 @@ export default class Main {
             self.score.score += merged.value;
             if (merged.value === 4096) self.won = true
           } else {
-            self.moveTile(tile, positions.farthest)
+            self.moveTile(tile, positions.farthest);
           }
           if (!self.positionsEqual(cell, tile)) {
             moved = true

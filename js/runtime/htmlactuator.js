@@ -170,14 +170,14 @@ export default class HTMLActuator {
     this.clearContainer(this.scoreContainer);
     var difference = score - this.score;// 计算出增加的分数
     this.score = score;
-    this.scoreContainer.textContent = this.score;
+    this.scoreContainer.score = this.score;
     // 添加一个增加分数的动画效果
-    if (difference > 0) {
-      var addition = document.createElement("div");
-      addition.classList.add("score-addition");
-      addition.textContent = "+" + difference;
-      this.scoreContainer.appendChild(addition)
-    }
+    // if (difference > 0) {
+    //   var addition = document.createElement("div");
+    //   addition.classList.add("score-addition");
+    //   addition.textContent = "+" + difference;
+    //   this.scoreContainer.appendChild(addition)
+    // }
   }
 
   /**
@@ -185,7 +185,7 @@ export default class HTMLActuator {
    * @param {Object} bestScore
    */
   updateBestScore(bestScore) {
-    this.bestContainer.textContent = bestScore
+    this.bestContainer.score = bestScore
   }
 
   /**

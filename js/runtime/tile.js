@@ -97,7 +97,7 @@ export default class Tile extends Animation {
         GRID_CELL_WIDTH,
         GRID_CELL_WIDTH,
         START_X + this.leftpad(this.x) + dx * i,
-        START_Y + this.toppad(this._t) + dy * i));
+        START_Y + this.toppad(this.y) + dy * i));
     }
     this.initFrames(frames);
   }
