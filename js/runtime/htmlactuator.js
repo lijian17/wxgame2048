@@ -1,11 +1,15 @@
+import Tile from '../runtime/tile.js'
+import DataBus from '../databus.js'
 
-export default class CanvasActuator {
-  constructor() {
-    this.tileContainer = null;
-    this.scoreContainer = null;
-    this.bestContainer = null;
-    this.messageContainer = null;
-    this.score = 0
+let databus = new DataBus()
+
+export default class HTMLActuator {
+  constructor(tileContainer, scoreContainer, bestContainer, messageContainer) {
+    this.tileContainer = tileContainer;
+    this.scoreContainer = scoreContainer;
+    this.bestContainer = bestContainer;
+    this.messageContainer = messageContainer;
+    this.score = 0;
   }
 
   /**
@@ -16,7 +20,7 @@ export default class CanvasActuator {
   actuate(grid, metadata) {
     var self = this;
     window.requestAnimationFrame(function () {
-      self.clearContainer(self.tileContainer);// 先清理展示控件数据
+      // self.clearContainer(self.tileContainer);// 先清理展示控件数据
       grid.cells.forEach(function (column) {
         column.forEach(function (cell) {
           if (cell) {
@@ -27,8 +31,8 @@ export default class CanvasActuator {
       self.updateScore(metadata.score);
       self.updateBestScore(metadata.bestScore);
       var maxScore = 0;
-      for (i in grid.cells) {
-        for (j in grid.cells[i]) {
+      for (let i in grid.cells) {
+        for (let j in grid.cells[i]) {
           if (grid.cells[i][j]) {
             maxScore = maxScore > grid.cells[i][j].value ? maxScore : grid.cells[i][j].value
           }
@@ -47,7 +51,7 @@ export default class CanvasActuator {
 
   // 继续游戏
   continueGame() {
-    this.clearMessage()
+    this.clearMessage();
   }
 
   /**
@@ -55,8 +59,16 @@ export default class CanvasActuator {
    * @param {Object} container 要被清理的容器
    */
   clearContainer(container) {
-    while (container.firstChild) {
-      container.removeChild(container.firstChild)
+    container.update();
+  }
+
+  /**
+   * 清空容器
+   * @param {Object} container 要被清理的容器
+   */
+  clearTileContainer(tileContainer) {
+    for(tile in tileContainer) {
+      databus.removeTile(tile);
     }
   }
 
@@ -66,54 +78,59 @@ export default class CanvasActuator {
    */
   addTile(tile) {
     var self = this;
-    var wrapper = document.createElement("div");
-    var inner = document.createElement("div");
     var position = tile.previousPosition || {
       x: tile.x,
       y: tile.y
     }
-    var positionClass = this.positionClass(position);
-    // 样式列表：滑块样式、滑块数值样式、滑块坐标位置样式
-    var classes = ["tile", "tile-" + tile.value, positionClass];
-    // 添加特别的样式(滑块数字内容变多需要相应调整字体大小)
-    if (tile.value > 2048) classes.push("tile-super");
-    this.applyClasses(wrapper, classes);
-    inner.classList.add("tile-inner");
-    inner.textContent = tile.value;
+    // var positionClass = this.positionClass(position);
+    // // 样式列表：滑块样式、滑块数值样式、滑块坐标位置样式
+    // var classes = ["tile", "tile-" + tile.value, positionClass];
+    // // 添加特别的样式(滑块数字内容变多需要相应调整字体大小)
+    // if (tile.value > 2048) classes.push("tile-super");
+    // this.applyClasses(wrapper, classes);
+    // inner.classList.add("tile-inner");
+    // inner.textContent = tile.value;
+
+    let _tile = databus.pool.getItemByClass('tile', Tile);
+
     // 如果自定义了滑块显示文本，则使用之
-    if (window.my_list) {
-      inner.textContent = my_list[tile.value] || tile.value;
-      if (inner.textContent.substring(0, 4) == "http") {
-        inner.innerHTML = '<img src="' + inner.textContent + '" class="tile-inner"/>'
-      }
-      // 根据文字数量，动态计算文字大小
-      inner.style.fontSize = 1 / inner.textContent.length * 90 + "px";
-      inner.style.fontFamily = ""
-    }
+    // if (window.my_list) {
+    //   inner.textContent = my_list[tile.value] || tile.value;
+    //   if (inner.textContent.substring(0, 4) == "http") {
+    //     inner.innerHTML = '<img src="' + inner.textContent + '" class="tile-inner"/>'
+    //   }
+    //   // 根据文字数量，动态计算文字大小
+    //   inner.style.fontSize = 1 / inner.textContent.length * 90 + "px";
+    //   inner.style.fontFamily = ""
+    // }
     if (tile.previousPosition) {
       // 上一个坐标点
-      window.requestAnimationFrame(function () {
-        classes[2] = self.positionClass({
-          x: tile.x,
-          y: tile.y
-        });
-        self.applyClasses(wrapper, classes)
-      })
+      // window.requestAnimationFrame(function () {
+      //   classes[2] = self.positionClass({
+      //     x: tile.x,
+      //     y: tile.y
+      //   });
+      //   self.applyClasses(wrapper, classes)
+      // })
+      _tile.init(position, tile.value, 3);
     } else if (tile.mergedFrom) {
       // 滑块合并
-      classes.push("tile-merged");
-      this.applyClasses(wrapper, classes);
-      tile.mergedFrom.forEach(function (merged) {
-        self.addTile(merged)
-      })
+      // classes.push("tile-merged");
+      // this.applyClasses(wrapper, classes);
+      // tile.mergedFrom.forEach(function (merged) {
+      //   self.addTile(merged)
+      // })
+      _tile.init(position, tile.value, 2);
     } else {
       // 添加新的滑块
-      classes.push("tile-new");
-      this.applyClasses(wrapper, classes)
+      // classes.push("tile-new");
+      // this.applyClasses(wrapper, classes)
+      _tile.init(position, tile.value, 1);
     }
     // 将滑块文本容器添加进滑块容器，最后将滑块容器添加进滑块组容器
-    wrapper.appendChild(inner);
-    this.tileContainer.appendChild(wrapper)
+    // wrapper.appendChild(inner);
+    // this.tileContainer.appendChild(wrapper)
+    databus.tiles.push(_tile);
   }
 
   /**
@@ -140,7 +157,7 @@ export default class CanvasActuator {
    * 滑块坐标点的样式
    * @param {Object} position
    */
-  positionClass(position) {
+  positionClass2(position) {
     position = this.normalizePosition(position);
     return "tile-position-" + position.x + "-" + position.y
   }
@@ -153,14 +170,14 @@ export default class CanvasActuator {
     this.clearContainer(this.scoreContainer);
     var difference = score - this.score;// 计算出增加的分数
     this.score = score;
-    this.scoreContainer.textContent = this.score;
+    this.scoreContainer.score = this.score;
     // 添加一个增加分数的动画效果
-    if (difference > 0) {
-      var addition = document.createElement("div");
-      addition.classList.add("score-addition");
-      addition.textContent = "+" + difference;
-      this.scoreContainer.appendChild(addition)
-    }
+    // if (difference > 0) {
+    //   var addition = document.createElement("div");
+    //   addition.classList.add("score-addition");
+    //   addition.textContent = "+" + difference;
+    //   this.scoreContainer.appendChild(addition)
+    // }
   }
 
   /**
@@ -168,7 +185,7 @@ export default class CanvasActuator {
    * @param {Object} bestScore
    */
   updateBestScore(bestScore) {
-    this.bestContainer.textContent = bestScore
+    this.bestContainer.score = bestScore
   }
 
   /**
@@ -211,8 +228,8 @@ export default class CanvasActuator {
 
   // 清理游戏描述消息，游戏继续
   clearMessage() {
-    this.messageContainer.classList.remove("game-won");
-    this.messageContainer.classList.remove("game-over")
+    // TODO 待处理
+    // this.messageContainer.classList.remove("game-won");
+    // this.messageContainer.classList.remove("game-over");
   }
-
 }

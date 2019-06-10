@@ -1,21 +1,29 @@
 
-let instance
-
 /**
- * 数据存储管理器
+ * 自定义一个假冒数据存储器
  */
+window.fakeStorage = {
+  _data: {},
+  setItem: function (id, val) {
+    return this._data[id] = String(val)
+  },
+  getItem: function (id) {
+    return this._data.hasOwnProperty(id) ? this._data[id] : undefined
+  },
+  removeItem: function (id) {
+    return delete this._data[id]
+  },
+  clear: function () {
+    return this._data = {}
+  }
+}
+
 export default class LocalStorageManager {
   constructor() {
-    if (instance) {
-      return instance
-    }
-
     this.bestScoreKey = "bestScore";
     this.gameStateKey = "gameState";
     var supported = this.localStorageSupported();
-    this.storage = supported ? window.localStorage : window.fakeStorage
-
-    instance = this
+    this.storage = supported ? window.localStorage : window.fakeStorage;
   }
 
   /**
@@ -27,9 +35,9 @@ export default class LocalStorageManager {
     try {
       storage.setItem(testKey, "1");
       storage.removeItem(testKey);
-      return true
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   }
 
@@ -37,7 +45,7 @@ export default class LocalStorageManager {
    * 获取历史最高分
    */
   getBestScore() {
-    return this.storage.getItem(this.bestScoreKey) || 0
+    return this.storage.getItem(this.bestScoreKey) || 0;
   }
 
   /**
@@ -45,7 +53,7 @@ export default class LocalStorageManager {
    * @param {Object} score
    */
   setBestScore(score) {
-    this.storage.setItem(this.bestScoreKey, score)
+    this.storage.setItem(this.bestScoreKey, score);
   }
 
   /**
@@ -53,7 +61,7 @@ export default class LocalStorageManager {
    */
   getGameState() {
     var stateJSON = this.storage.getItem(this.gameStateKey);
-    return stateJSON ? JSON.parse(stateJSON) : null
+    return stateJSON ? JSON.parse(stateJSON) : null;
   }
 
   /**
@@ -61,13 +69,13 @@ export default class LocalStorageManager {
    * @param {Object} gameState
    */
   setGameState(gameState) {
-    this.storage.setItem(this.gameStateKey, JSON.stringify(gameState))
+    this.storage.setItem(this.gameStateKey, JSON.stringify(gameState));
   }
 
   /**
    * 清除本地数据库记录的游戏状态数据
    */
-  clearGameState() {
-    this.storage.removeItem(this.gameStateKey)
+  clearGameState = function () {
+    this.storage.removeItem(this.gameStateKey);
   }
 }

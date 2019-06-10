@@ -2,12 +2,31 @@
  * 游戏基础的精灵类
  */
 export default class Sprite {
-  constructor(style = '', width= 0, height = 0, x = 0, y = 0) {
+  constructor(imgSrc = '', style = '', width = 0, height = 0, x = 0, y = 0) {
+    this.img = new Image();
+    this.img.src = imgSrc;
+
     this.style = style;
-    this.width  = width;
+
+    this.width = width;
     this.height = height;
-    this.x = x;
-    this.y = y;
+
+    this.spX = x;
+    this.spY = y;
+
+    this.visible = true;
+  }
+
+  /**
+   * 将精灵图绘制在canvas上
+   * @param ctx canvas对象
+   */
+  drawToCanvas(ctx) {
+    if (!this.visible) {
+      return;
+    }
+
+    ctx.drawImage(this.img, this.spX, this.spY, this.width, this.height);
   }
 
   pathRoundRect(ctx, width, height, radius) {
@@ -39,5 +58,25 @@ export default class Sprite {
     ctx.fillStyle = style;
     ctx.fill();
     ctx.restore();
+  }
+
+  /**
+   * 简单的碰撞检测定义：
+   * 另一个精灵的中心点处于本精灵所在的矩形内即可
+   * @param{Sprite} sp: Sptite的实例
+   */
+  isCollideWith(sp) {
+    let spX = sp.spX + sp.width / 2;
+    let spY = sp.spY + sp.height / 2;
+
+    if (!sp.visible || !this.visible) {
+      return false;
+    }
+
+    if ((spX >= this.spX) || (spX <= (this.spX + this.width)) || (spY >= this.spY) || (spY <= (this.spY + this.height))) {
+      return false;
+    }
+
+    return true;
   }
 }
